@@ -37,7 +37,7 @@ interface IHsm: IAvailable {
     fun injectEncryptedKey(type: EKeyType, encryptIndex: Int, key: SecretKey, storeIndex: Int): Boolean
 
     fun getCryptogramKey(keyType: EKeyType, publicKey: String) =
-        CryptogramData(keyType = keyType).apply {
+         CryptogramData(keyType = keyType).apply {
             val algo: KeyUtils.EAlgo = KeyUtils.EAlgo.TDES
             val keyLength = 24
 
