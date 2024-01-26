@@ -1,8 +1,6 @@
-package com.bbva.devicelib
+package com.bbva.devicelib.physical
 
 import com.bbva.devicelib.connection.IConnect
-import com.bbva.devicelib.physical.IAvailable
-import com.bbva.devicelib.physical.IPrinter
 
 interface IDeviceCenter: IConnect {
 

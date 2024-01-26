@@ -1,7 +1,6 @@
-package com.bbva.devicelib
+package com.bbva.devicelib.physical
 
 import android.content.Context
-import com.bbva.devicelib.physical.IPrinter
 
 interface IDeviceCenterCreator {
 
