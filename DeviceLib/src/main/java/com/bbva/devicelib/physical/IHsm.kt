@@ -53,6 +53,6 @@ interface IHsm: IAvailable {
         CBC
     }
 
-    fun encrypt(keyIndex: Int, mode: EEncryptMode = EEncryptMode.ECB, data: ByteArray, iv: ByteArray = byteArrayOf())
-    fun decrypt(keyIndex: Int, mode: EEncryptMode = EEncryptMode.ECB, data: ByteArray, iv: ByteArray = byteArrayOf())
+    fun encrypt(keyIndex: Int, mode: EEncryptMode = EEncryptMode.ECB, data: ByteArray, iv: ByteArray = byteArrayOf()): ByteArray
+    fun decrypt(keyIndex: Int, mode: EEncryptMode = EEncryptMode.ECB, data: ByteArray, iv: ByteArray = byteArrayOf()): ByteArray
 }
