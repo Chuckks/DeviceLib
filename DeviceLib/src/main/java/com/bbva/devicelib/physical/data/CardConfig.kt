@@ -1,7 +1,7 @@
 package com.bbva.devicelib.physical.data
 
 import com.bbva.devicelib.physical.ICard
-import com.bbva.devicelib.utilities.IEmpty
+import com.bbva.utilitieslib.interfaces.IEmpty
 import com.bbva.utilitieslib.utils.TimeSpan
 
 private val DEFAULT_FALLBACK: Boolean = false

@@ -1,7 +1,7 @@
 package com.bbva.devicelib.physical
 
-import com.bbva.devicelib.utilities.IEmpty
 import com.bbva.utilitieslib.extensions.toHexaString
+import com.bbva.utilitieslib.interfaces.IEmpty
 import com.bbva.utilitieslib.security.KeyUtils
 import com.bbva.utilitieslib.security.RSA
 import javax.crypto.SecretKey
@@ -27,7 +27,7 @@ interface IHsm: IAvailable {
         val keyType: EKeyType,
         var cryptogram: String = "",
         var kcv: String = ""
-    ): IEmpty{
+    ): IEmpty {
         override fun isEmpty() = (cryptogram.isEmpty() && kcv.isEmpty())
     }
 

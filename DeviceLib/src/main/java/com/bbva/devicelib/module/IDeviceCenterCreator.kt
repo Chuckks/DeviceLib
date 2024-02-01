@@ -1,4 +1,4 @@
-package com.bbva.devicelib.physical
+package com.bbva.devicelib.module
 
 import android.content.Context
 

@@ -1,6 +1,6 @@
 package com.bbva.devicelib.physical.data
 
-import com.bbva.devicelib.utilities.IEmpty
+import com.bbva.utilitieslib.interfaces.IEmpty
 
 private const val DEFAULT_CONFIRM = "CONFIRME"
 private const val DEFAULT_INPUT_PIN = "INGRESE PIN"
