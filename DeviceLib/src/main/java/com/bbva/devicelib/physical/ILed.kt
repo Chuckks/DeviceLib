@@ -1,6 +1,6 @@
 package com.bbva.devicelib.physical
 
-interface ILed {
+interface ILed: IAvailable {
     enum class EColor {
         RED,
         GREEN,

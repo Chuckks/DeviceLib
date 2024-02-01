@@ -1,14 +1,32 @@
 package com.bbva.devicelib.module
 
 import com.bbva.devicelib.connection.IConnect
+import com.bbva.devicelib.emv.IEmvConfig
+import com.bbva.devicelib.emv.IEmvProcess
 import com.bbva.devicelib.physical.IAvailable
+import com.bbva.devicelib.physical.*
 import com.bbva.devicelib.physical.IPrinter
 
 interface IDeviceCenter: IConnect {
 
+    val led: ILed
+    val info: IInfo
+    val power: IPower
+    val scan: IScan
     val printer: IPrinter
+    val screen: IScreen
+    val pinpad: IPinpad
+    val sound: ISound
+    val card: ICard
+    val hsm: IHsm
+    val comm: IComms
+    val emvConfig: IEmvConfig
+    val emvProcess: IEmvProcess
+    val permissions: IPermissions
+    val external: IExternalConnection
+    val softwareInstall: ISoftwareInstall
 
-    enum class EDevice{
+    enum class EDevice {
         LED,
         SCAN,
         PRINTER,
@@ -21,18 +39,18 @@ interface IDeviceCenter: IConnect {
     }
 
     private fun isAvailable(value: IAvailable) = value.isAvailable()
-    fun isAvailable(device: EDevice) = isAvailable( getDevice(device) )
+    fun isAvailable(device: EDevice) = isAvailable(getDevice(device))
 
-    private fun getDevice(device: EDevice) =
-        when(device){
-            EDevice.LED -> TODO()
-            EDevice.SCAN -> TODO()
-            EDevice.PRINTER -> printer
-            EDevice.PINPAD -> TODO()
-            EDevice.HSM -> TODO()
-            EDevice.CARD -> TODO()
-            EDevice.EMV -> TODO()
-            EDevice.SOUND -> TODO()
-            EDevice.EXTERNAL -> TODO()
+    private fun getDevice(device: EDevice): IAvailable =
+        when (device) {
+            EDevice.LED      -> led
+            EDevice.SCAN     -> scan
+            EDevice.PRINTER  -> printer
+            EDevice.PINPAD   -> pinpad
+            EDevice.HSM      -> hsm
+            EDevice.CARD     -> card
+            EDevice.EMV      -> emvProcess
+            EDevice.SOUND    -> sound
+            EDevice.EXTERNAL -> external
         }
 }
