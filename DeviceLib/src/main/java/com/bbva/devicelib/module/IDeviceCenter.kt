@@ -23,7 +23,6 @@ interface IDeviceCenter: IConnect {
     val emvConfig: IEmvConfig
     val emvProcess: IEmvProcess
     val permissions: IPermissions
-    val external: IExternalConnection
     val softwareInstall: ISoftwareInstall
 
     enum class EDevice {
@@ -34,8 +33,7 @@ interface IDeviceCenter: IConnect {
         HSM,
         CARD,
         EMV,
-        SOUND,
-        EXTERNAL
+        SOUND
     }
 
     private fun isAvailable(value: IAvailable) = value.isAvailable()
@@ -51,6 +49,5 @@ interface IDeviceCenter: IConnect {
             EDevice.CARD     -> card
             EDevice.EMV      -> emvProcess
             EDevice.SOUND    -> sound
-            EDevice.EXTERNAL -> external
         }
 }
