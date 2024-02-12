@@ -14,4 +14,18 @@ data class Application(
 
     override fun isEmpty() =
         id == DEFAULT_APP_ID && name == DEFAULT_APP_NAME && preferredName == DEFAULT_APP_NAME && label == DEFAULT_APP_NAME
+
+    val betterName: String
+        get() {
+            if (label.isNotEmpty())
+                return label
+
+            if (name.isNotEmpty())
+                return name
+
+            return if (preferredName.isNotEmpty())
+                preferredName
+            else
+                ""
+        }
 }

@@ -5,5 +5,5 @@ import com.bbva.utilitieslib.utils.TimeSpan
 data class PinpadConfig(
     var keyIndex: Int = 0,
     var dukpt: Boolean = false,
-    var timeout: TimeSpan = TimeSpan(60000)
+    var timeout: TimeSpan = TimeSpan(50000)
 )

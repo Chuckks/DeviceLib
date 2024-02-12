@@ -1,4 +1,9 @@
 package com.bbva.devicelib.emv.inputData
 
-class HostResponseData {
-}
+import com.bbva.devicelib.emv.inputData.enums.EOnlineStatus
+
+data class HostResponseData(
+    val tvlList: String = "",
+    val removeCard: Boolean = false,
+    val onlineStatus: EOnlineStatus = EOnlineStatus.FAILED
+)
