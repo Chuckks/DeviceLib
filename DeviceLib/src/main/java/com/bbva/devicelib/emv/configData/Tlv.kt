@@ -1,6 +1,8 @@
 package com.bbva.devicelib.emv.configData
 
+import com.bbva.devicelib.Constant
 import com.bbva.utilitieslib.extensions.toHexaByte
+import com.bbva.utilitieslib.extensions.toHexaString
 import com.bbva.utilitieslib.interfaces.IEmpty
 
 
