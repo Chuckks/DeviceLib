@@ -2,6 +2,7 @@ package com.bbva.devicelib.emv.configData
 
 import com.bbva.utilitieslib.interfaces.IEmpty
 
+
 private const val DEFAULT_MODULE = ""
 private const val DEFAULT_INDEX = ""
 private const val DEFAULT_RID = ""
