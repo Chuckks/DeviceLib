@@ -16,7 +16,7 @@ class PemData(
 
     companion object{
         private const val PAN_MODE_POSITION = 0
-        private const val PIN_MODE_POSITION = 1
+        private const val PIN_MODE_POSITION = 2
         private const val PEM_LENGTH = 3
 
         fun parser(value: String): PemData {
