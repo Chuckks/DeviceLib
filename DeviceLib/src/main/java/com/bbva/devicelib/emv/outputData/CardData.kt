@@ -2,7 +2,6 @@ package com.bbva.devicelib.emv.outputData
 
 import android.util.Log
 import com.bbva.devicelib.Constant
-import com.bbva.utilitieslib.extensions.format
 import com.bbva.utilitieslib.interfaces.IEmpty
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,12 +30,12 @@ class CardData(
 
     companion object{
 
-        private const val TRACK_ONE_START_SENTINEL = '%'
-        private const val TRACKS_END_SENTINEL = "?"
-        private const val TRACK_TWO_START_SENTINEL = ';'
-        private const val TRACK_TWO_SEPARTOR = "="
-        private const val FORMAT_CODE = 'B'
-        private const val FIELD_SEPARATOR = "^"
+        const val TRACK_ONE_START_SENTINEL = '%'
+        const val TRACKS_END_SENTINEL = "?"
+        const val TRACK_TWO_START_SENTINEL = ';'
+        const val TRACK_TWO_SEPARTOR = "="
+        const val FORMAT_CODE = 'B'
+        const val FIELD_SEPARATOR = "^"
 
         private fun Date.format(pattern: String) = SimpleDateFormat(pattern).format(this)
 
