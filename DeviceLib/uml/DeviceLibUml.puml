@@ -1,0 +1,1007 @@
+@startuml
+!define DARKBLUE
+!includeurl https://raw.githubusercontent.com/Drakemor/RedDress-PlantUML/master/style.puml
+
+interface com.bbva.devicelib.physical.IComms {
++ TimeSpan readTimeout
++ Int maxSize
++ Bundle params
++ Boolean open()
++ Boolean close()
++ void flush()
++ Boolean isOpened()
++ Boolean write(Byte)
++ Boolean write(String)
++ Boolean write(ByteArray)
++ Byte readByte()
++ String readString()
++ ByteArray readByteArray()
+}
+
+
+class com.bbva.devicelib.emv.configData.Tlv$Companion {
+- void fillDefaultData(TagData,Char)
++ void parser(String)
++ Pair<Tlv, Int> parser(String,Int)
++ String convertToNumeric(TagData,Int)
++ String convert(TagData,String)
++ void convert(ByteArray)
+- String calculateLength(Int)
+- Pair<Int, Int> unpackLength(String,Int)
+- Pair<String, Int> unpackTag(String,Int)
+- Pair<String, Int> unpackValue(String,Int)
+}
+
+class com.bbva.devicelib.emv.configData.Tlv {
++ void setValue(ByteArray)
++ void isEmpty()
++ void pack()
+}
+
+enum com.bbva.devicelib.emv.IEmvProcess$EError {
++  NONE
++  UNKNOWN
++  MAG_NOT_ALLOW
++  EXPIRED_DATE
++  TRACK_BAD_FORMAT
++  USE_OTHER_INTERFACE
++  CARD_NUM_REFUSED
++  CARD_UNSUPPORTED
++  CARD_BLOCKED
++  CARD_INVALID
++  CARD_REFUSED_SYNC
++  INPUT_PIN
++  TRY_AGAIN
++  USE_CHIP
++  INTERNAL_ERROR
++  FALLBACK
++  SEE_PHONE
++  INTENT_OTHER_CARD
++  TIMEOUT
++  USER_CANCEL
++  ONLINE_PROCESS
+}
+
+enum com.bbva.devicelib.emv.IEmvProcess$EResult {
++  NONE
++  ONLINE_APPROVAL
++  ONLINE_DENIAL
++  OFFLINE_APPROVAL
++  OFFLINE_DENIAL
++  SUCCESS
++  ERROR
++  TRY_AGAIN
+}
+
+interface com.bbva.devicelib.emv.IEmvProcess {
++ OutputData outputData
++ Boolean isInit()
++ void init(IEmvProcessView)
++ Boolean start(InputData)
++ void stop()
++ void setSelectApp(Int)
++ void confirmTrxData(Boolean)
++ void isSignatureCaptured(Boolean)
+}
+
+
+enum com.bbva.devicelib.emv.inputData.CvmOptions$ECapabilities {
++  GENERAL
++  AMEX
+}
+
+class com.bbva.devicelib.emv.inputData.CvmOptions {
+- void toString(Int)
++ void getNoCvmCapabilities()
++ void getCvmCapabilities(ECapabilities)
+- Int getGeneralOptions()
+- String getGeneralCapabilities()
+- String getAmexCapabilities()
+}
+
+class com.bbva.devicelib.emv.outputData.enums.cvmResult.EPerformed$Companion {
++ void find(String)
+}
+
+enum com.bbva.devicelib.emv.outputData.enums.cvmResult.EPerformed {
++  UNKNOWN
++  PLAINTEXT_PIN
++  ENCYPHERED_PIN_ONLINE
++  PLAINTEXT_PIN_SIGNATURE
++  ENCYPHERED_PIN_OFFLINE
++  ENCYPHERED_PIN_SIGNATURE
++  SIGNATURE
++  NOCVM_REQUIRED
++  NOCVM_PERFORMED
+}
+
+class com.bbva.devicelib.emv.inputData.TerminalData {
+}
+interface com.bbva.devicelib.emv.IEmvProcessView {
++ void displaySupportedCards(Set<ICard.EType>)
++ void displayDetectedCard(ICard.EType)
++ void promptUserToSelectApp(List<String>)
++ void promptUserToConfirmCardNumber(PanData)
++ void captureUserSignature()
++ void promptUserForPin()
++ HostResponseData sendTransactionRequest(OutputData)
++ void displaySuccessTransaction()
++ void displayFailedTransaction()
++ void displayTransactionError(IEmvProcess.EError)
++ void promptUserToRemoveCard()
+}
+
+class com.bbva.devicelib.emv.outputData.enums.cvmResult.EResult$Companion {
++ void find(String)
+}
+
+enum com.bbva.devicelib.emv.outputData.enums.cvmResult.EResult {
++  UNKNOWN
++  FAILED
++  SUCCESSFUL
+}
+
+interface com.bbva.devicelib.physical.IAvailable {
++ Boolean isAvailable()
+}
+
+class com.bbva.devicelib.emv.outputData.CardData$Companion {
++  TRACK_ONE_START_SENTINEL
++  TRACKS_END_SENTINEL
++  TRACK_TWO_START_SENTINEL
++  TRACK_TWO_SEPARTOR
++  FORMAT_CODE
++  FIELD_SEPARATOR
+- void format(String)
++ CardData parser(String)
+- CardData track1Parser(String)
+- CardData track2Parser(String)
+- Pair<Int, String> parser(Int,String)
+}
+
+
+class com.bbva.devicelib.emv.outputData.CardData {
++ void isEmpty()
++ void checkMagneticPermit()
++ void checkExpirationDate()
++ void checkDecideCard()
+}
+
+class com.bbva.devicelib.emv.inputData.AmountData {
++  totalAmount
++ String toFormatString()
+}
+
+
+interface com.bbva.devicelib.physical.ISound {
++ void infoBeep()
++ void errorBeep()
++ void successBeep()
++ void warningBeep()
++ void custom(Int,Int,Int,Int)
+}
+
+class com.bbva.devicelib.emv.outputData.enums.Pem.EPanMode$Companion {
++ void isPresent(String)
++ void find(String)
+}
+
+enum com.bbva.devicelib.emv.outputData.enums.Pem.EPanMode {
++  UNKNOW
++  MANUAL
++  MAG
++  CHIP
++  CTLS_CHIP
++  FALLBACK
++  CTLS_MAG
+}
+
+enum com.bbva.devicelib.emv.inputData.enums.ETrans {
++  GOOD_SERVICE
++  CASH
++  CASHBACK
++  PURCHASE_WITH_CASHBACK
++  REFUND
+}
+
+class com.bbva.devicelib.emv.outputData.TvrData {
++  bytes
++ void isEmpty()
++ void getEnables(Int)
++ List<TvrDataBit> getAllEnables()
+}
+
+
+class com.bbva.devicelib.emv.outputData.TvrDataByte {
++  bits
++ void isEmpty()
++ void getEnables()
+}
+
+
+class com.bbva.devicelib.emv.outputData.TvrDataBit {
++ void toString()
+}
+
+interface com.bbva.devicelib.physical.IScan {
++ void start()
++ void stop()
++ String getResult()
+}
+
+class com.bbva.devicelib.emv.outputData.Tvr$Companion {
++ Tvr parser(String)
+- void unpackByte(TvrDataByte,Byte)
+}
+
+class com.bbva.devicelib.emv.outputData.Tvr {
++ void isEmpty()
++ void toString()
+}
+
+interface com.bbva.devicelib.physical.IPower {
++ void sleep()
++ void shutdown()
++ void reboot()
++ void savingPower()
+}
+
+class com.bbva.devicelib.emv.outputData.enums.Pem.EPinMode$Companion {
++ void isPresent(String)
++ void find(String)
+}
+
+enum com.bbva.devicelib.emv.outputData.enums.Pem.EPinMode {
++  UNKNOW
++  PIN_ENABLE
++  PIN_DISABLE
++  PIN_FAIL
+}
+
+enum com.bbva.devicelib.physical.IPinpad$EResult {
++  INIT
++  SUCCESS
++  CANCEL
++  SKIPPED
++  FAILS
++ void isSuccess()
+}
+
+
+interface com.bbva.devicelib.physical.IPinpad {
++ void config(PinpadData)
++ void config(PinpadText)
++ void config(PinpadData,PinpadText)
++ void capture(String,(result: EResult) -> Unit)
++ String getPinBlock()
+}
+
+class com.bbva.devicelib.emv.inputData.PinpadConfig {
+}
+interface com.bbva.devicelib.physical.IPermissions {
++ Map<String, Boolean> getAllPermissions()
+}
+
+class com.bbva.devicelib.emv.configData.TlvList$Companion {
++ void parser(ByteArray)
++ void parser(String)
+}
+
+class com.bbva.devicelib.emv.configData.TlvList {
+- MutableList<Tlv> list
++ void add(Tlv)
++ void remove(Tlv)
++ void find(TagData)
++ void forEach((Tlv) -> Unit)
++ void map((Tlv) -> String)
++ void get(Int)
++ void set(Int,Tlv)
++ TlvList plus(TlvList)
++ String pack()
+}
+
+
+class com.bbva.devicelib.emv.outputData.ServiceCode$Companion {
+-  SERVICE_CODE_LENGTH
+-  INTERCHANGE_POSITION
+-  AUTHORIZATION_POSITION
+-  SERVICE_POSITION
++ ServiceCode parser(String)
+}
+
+
+class com.bbva.devicelib.emv.outputData.ServiceCode {
++ void isEmpty()
++ void toString()
++ void isPinRequired()
++ void isChipCard()
++ void isInternationalAvailable()
++ void isNationalAvailable()
+}
+
+class com.bbva.devicelib.emv.configData.CtlsSpecificData {
+}
+enum com.bbva.devicelib.emv.IEmvConfig$EType {
++  ICC
++  PAYPASS
++  PAYWAVE
++  EXPRESSPAY
+}
+
+interface com.bbva.devicelib.emv.IEmvConfig {
++ Boolean isCapksLoaded()
++ Boolean isAidsLoaded()
++ Boolean setConfig(TerminalParam,List<AidData>,List<CapkData>)
++ Boolean clean()
++ void setSpecificConfig(EType,TlvList)
++ void setSpecificConfig(HashMap<EType, TlvList>)
+}
+
+class com.bbva.devicelib.Constant {
++ String BBVA_PREFIX
++ String DEV_PREFIX
++ String EMV_PREFIX
++ String ISO_PREFIX
++ String APP_PREFIX
+}
+
+class com.bbva.devicelib.emv.outputData.Tsi$Companion {
++ Tsi parser(String)
+- void unpackByte(TsiDataByte,Byte)
+}
+
+class com.bbva.devicelib.emv.outputData.Tsi {
++ void isEmpty()
++ void toString()
+}
+
+class com.bbva.devicelib.emv.inputData.HostResponseData {
+}
+class com.bbva.devicelib.emv.outputData.enums.serviceCode.EAuthorization$Companion {
++ void find(Int)
++ void isPresent(Int)
+}
+
+enum com.bbva.devicelib.emv.outputData.enums.serviceCode.EAuthorization {
++  NORMAL
++  USER_ONLINE
++  USER_ONLINE_EXPLICIT
+}
+
+enum com.bbva.devicelib.emv.inputData.enums.EPinOption {
++  DISABLED
++  DECIDE_CARD
++  MANDATORY
+}
+
+enum com.bbva.devicelib.emv.inputData.enums.EOnlineStatus {
++  APPROVAL
++  DENIAL
++  FAILED
+}
+
+class com.bbva.devicelib.emv.outputData.enums.serviceCode.EService$Companion {
++ void find(Int)
++ void isPresent(Int)
+}
+
+enum com.bbva.devicelib.emv.outputData.enums.serviceCode.EService {
++  NO_RESTRICTIONS_WITH_PIN
++  NO_RESTRICTIONS
++  GOODS_AND_SERVICE
++  ATM_ONLY_WITH_PIN
++  CASH_ONLY
++  GOODS_AND_SERVICE_WITH_PIN
++  NO_RESTRICTIONS_WITH_PIN1
++  GOODS_AND_SERVICE_WITH_PIN1
+}
+
+class com.bbva.devicelib.emv.outputData.enums.serviceCode.EInterchange$Companion {
++ void find(Int)
++ void isPresent(Int)
+}
+
+enum com.bbva.devicelib.emv.outputData.enums.serviceCode.EInterchange {
++  NONE
++  INTERNATIONAL
++  INTERNATIONAL_WITH_ICC
++  NATIONAL
++  NATIONAL_WITH_ICC
++  NO_INTERCHANGE
+}
+
+enum com.bbva.devicelib.emv.inputData.enums.EAccount {
++  DEFAULT
++  SAVINGS
++  DEBIT
++  CREDIT
+}
+
+class com.bbva.devicelib.emv.outputData.CvmResult$Companion {
+-  PERFORMED_POSITION
+-  CONDITION_POSITION
+-  RESULT_POSITION
+-  CVM_RESULT_LENGTH
+-  VERIFICATION_CVM
++ CvmResult parser(String)
+- String getPerformedCode(String)
+}
+
+
+class com.bbva.devicelib.emv.outputData.CvmResult {
++ void isEmpty()
++ void toString()
++ void isNotCvmRequired()
++ void isSignRequired()
++ void isPinRequired()
+}
+
+enum com.bbva.devicelib.physical.ICard$EType {
++  UNKNOWN
++  MAGNETIC
++  ICC
++  CTLS
+}
+
+enum com.bbva.devicelib.physical.ICard$EStep {
++  INIT
++  READING
++  CANCEL
++  ERROR
++  FINISH
+}
+
+interface com.bbva.devicelib.physical.ICard {
++ EStep step
++ EType type
++ String data
++ Boolean checkCard(CardConfig)
++ void cancelCheckCard()
++ void cardOff()
++ Boolean isPresent()
+}
+
+
+enum com.bbva.devicelib.physical.IHsm$EKeyType {
++  TMK
++  PIN
++  MAC
++  DATA
++  DUKPT_KEK
++  DUKPT_BDK
++  DUKPT_IPEK
+}
+
+enum com.bbva.devicelib.physical.IHsm$EAlgo {
++  TDES
++  AES
++  RSA
+}
+
+class com.bbva.devicelib.physical.IHsm$CryptogramData {
++ void isEmpty()
+}
+
+enum com.bbva.devicelib.physical.IHsm$EEncryptMode {
++  ECB
++  CBC
+}
+
+interface com.bbva.devicelib.physical.IHsm {
++ ByteArray getKCV(Int)
++ Boolean injectClearKey(EKeyType,SecretKey,Int)
++ Boolean injectEncryptedKey(EKeyType,Int,SecretKey,Int)
++ void getCryptogramKey(EKeyType,String)
++ ByteArray encrypt(Int,EEncryptMode,ByteArray,ByteArray)
++ ByteArray decrypt(Int,EEncryptMode,ByteArray,ByteArray)
+}
+
+class com.bbva.devicelib.physical.data.CardConfig {
++ void isEmpty()
+}
+
+class com.bbva.devicelib.emv.inputData.InputData {
+}
+class com.bbva.devicelib.emv.configData.AidData {
++ void isEmpty()
++ void checkAid(String)
+}
+
+class com.bbva.devicelib.emv.outputData.TsiData {
++  bytes
++ void isEmpty()
++ void getEnables(Int)
++ List<TsiDataBit> getAllEnables()
+}
+
+
+class com.bbva.devicelib.emv.outputData.TsiDataByte {
++  bits
++ void isEmpty()
++ void getEnables()
+}
+
+
+class com.bbva.devicelib.emv.outputData.TsiDataBit {
++ void toString()
+}
+
+enum com.bbva.devicelib.emv.inputData.enums.EFlowType {
++  FULL_GRADE
++  PARTIAL_GRADE
+}
+
+class com.bbva.devicelib.emv.configData.DrlData {
+}
+enum com.bbva.devicelib.physical.IInfo$EType {
++  SDK_VERSION
++  HARDWARE_VERSION
++  FIRMWARE_VERSION
++  SERIAL_NUMBER
++  DEVICE_CODE
++  DEVICE_MODEL
++  EMV_VERSION
++  EMV_KERNEL_CHECKSUM
++  IS_CHARGING
++  IS_KEYBOARD_AVAILABLE
++  IS_PRINTER_AVAILABLE
++  BATTERY_PERCENTAGE
++  MANUFACTURE
++  MAC_ADDRESS
++  POS_ID
+}
+
+interface com.bbva.devicelib.physical.IInfo {
++ String getInfo(EType)
+}
+
+class com.bbva.devicelib.emv.inputData.CurrencyData {
++ void isEmpty()
+}
+
+interface com.bbva.devicelib.connection.ISdkConnect {
++ Boolean isConnected()
++ Boolean connect(Context)
++ Boolean disconnect(Context)
+}
+
+class com.bbva.devicelib.physical.data.PinpadText {
++ void isEmpty()
+}
+
+enum com.bbva.devicelib.physical.ILed$EColor {
++  RED
++  GREEN
++  YELLOW
++  BLUE
+}
+
+interface com.bbva.devicelib.physical.ILed {
++ void turnOn(EColor)
++ void turnOff(EColor)
++ Boolean isColorOn(EColor)
++ void turnOnLights(EColor)
++ void turnOffLights(EColor)
++ void turnOnAllLights()
++ void turnOffAllLights()
++ void switchLight(EColor)
++ void switchLights(EColor)
++ void switch()
+}
+
+class com.bbva.devicelib.emv.outputData.TrackData {
++ void isEmpty()
+}
+
+enum com.bbva.devicelib.emv.outputData.enums.tsi.ETsiDescriptor {
++  B1_b8
++  B1_b7
++  B1_b6
++  B1_b5
++  B1_b4
++  B1_b3
++  B1_b2
++  B1_b1
++  B2_b8
++  B2_b7
++  B2_b6
++  B2_b5
++  B2_b4
++  B2_b3
++  B2_b2
++  B2_b1
+}
+
+enum com.bbva.devicelib.physical.IScreen$ENavigator {
++  NONE
++  HOME
++  BACK
++  RECENT
+}
+
+enum com.bbva.devicelib.physical.IScreen$EPosition {
++  RIGHT
++  LEFT
++  DOWN
++  UP
+}
+
+interface com.bbva.devicelib.physical.IScreen {
++ void setExclusiveMode(Boolean)
++ void setDropDown(Boolean)
++ void setNavigationVisibility(Boolean)
++ void hideNavigationItems(ENavigator)
+}
+
+class com.bbva.devicelib.emv.outputData.IccData {
++ void isEmpty()
+}
+
+enum com.bbva.devicelib.emv.outputData.enums.tvr.ETvrDescriptor {
++  B1_b8
++  B1_b7
++  B1_b6
++  B1_b5
++  B1_b4
++  B1_b3
++  B1_b2
++  B1_b1
++  B2_b8
++  B2_b7
++  B2_b6
++  B2_b5
++  B2_b4
++  B2_b3
++  B2_b2
++  B2_b1
++  B3_b8
++  B3_b7
++  B3_b6
++  B3_b5
++  B3_b4
++  B3_b3
++  B3_b2
++  B3_b1
++  B4_b8
++  B4_b7
++  B4_b6
++  B4_b5
++  B4_b4
++  B4_b3
++  B4_b2
++  B4_b1
++  B5_b8
++  B5_b7
++  B5_b6
++  B5_b5
++  B5_b4
++  B5_b3
++  B5_b2
++  B5_b1
+}
+
+interface com.bbva.devicelib.connection.IConnect {
++ Boolean isConnected()
++ Boolean connect()
++ Boolean disconnect()
+}
+
+class com.bbva.devicelib.emv.outputData.PemData$Companion {
+-  PAN_MODE_POSITION
+-  PIN_MODE_POSITION
+-  PEM_LENGTH
++ PemData parser(String)
+}
+
+
+class com.bbva.devicelib.emv.outputData.PemData {
++ void isEmpty()
++ void toString()
+}
+
+enum com.bbva.devicelib.emv.outputData.PanData$EMask {
++  LAST4
++  FIRST6_LAST4
+}
+
+class com.bbva.devicelib.emv.outputData.PanData {
++ void isEmpty()
++ String getMaskedPan(EMask,Char)
+- void isPan(Char)
+- String getMaskedPan(Int,Int,Char)
+}
+
+class com.bbva.devicelib.emv.configData.SpecificData {
++ void isEmpty()
+}
+
+class com.bbva.devicelib.physical.data.PinpadData {
++ Int maxInputLen
++ Int minInputLen
++ Boolean supportbypass
++ Boolean orderNumKey
++ Boolean offline
++ Boolean dukpt
++ void isEmpty()
+}
+
+
+enum com.bbva.devicelib.module.IDeviceCenter$EDevice {
++  LED
++  SCAN
++  PRINTER
++  PINPAD
++  HSM
++  CARD
++  EMV
++  SOUND
+}
+
+interface com.bbva.devicelib.module.IDeviceCenter {
++ ILed led
++ IInfo info
++ IPower power
++ IScan scan
++ IPrinter printer
++ IScreen screen
++ IPinpad pinpad
++ ISound sound
++ ICard card
++ IHsm hsm
++ IComms comm
++ IEmvConfig emvConfig
++ IEmvProcess emvProcess
++ IPermissions permissions
++ ISoftwareInstall softwareInstall
+- void isAvailable(IAvailable)
++ void isAvailable(EDevice)
+- IAvailable getDevice(EDevice)
+}
+
+
+enum com.bbva.devicelib.emv.configData.EFormat {
++  ASCII
++  NUMERIC
++  HEXA
++  UNKNOW
+}
+
+class com.bbva.devicelib.emv.configData.TagData {
+}
+enum com.bbva.devicelib.emv.configData.ETag {
++  TERM_TYPE
++  TERM_CAPABILITIES
++  TERM_ADD_CAPABILITIES
++  TERM_CURRENCY_CODE
++  TERM_TAG_IFDSN
++  TERM_TAG_TM_AID
++  TERM_ID
++  TERM_MERCHANT_ID
++  TERM_RISK_MANAGEMENT_DATA
++  TERM_MERCHANT_CATEGORY
++  AID_VERSION_NUMBER
++  AID_ACQUIRER_IDENTIFIER
++  AID_TX_REF_CURRENCY_CODE
++  AID_MERCHANT_NAME_LOCATION
++  TX_CURRENCY_EXP
++  TX_COUNTRY_CODE
++  TX_AMOUNT
++  TX_OTHER_AMOUNT
++  TX_DATE
++  TX_SECUENCE_NUMBER
++  TX_TSI
++  TX_TVR
++  TX_TRANS_TYPE
++  TX_CVM_RESULT
++  TX_UNPREDITABLE_NUMBER
++  TX_POS_ENTRY_MODE
++  ICC_TRACK2
++  ICC_EXP_DATE
++  ICC_SERVICE_CODE
++  ICC_CAPK_INDEX
++  ICC_APP_CRYPTOGRAM
++  ICC_ISSUER_ID
++  ICC_PAN_SECUENCE_NUM
++  ICC_PAN
++  ICC_AID
++  ICC_CARDHOLDER_NAME
++  ICC_CRYPTO_INFO_DATA
++  ICC_APP_NAME
++  ICC_PREFERRED_NAME
++  ICC_APP_LABEL
++  CTLS_VISA_TTQ
++  CTLS_MC_CARD_DATA_INPUT_CAPABILITY
++  CTLS_MC_CVM_CAPABILITY
++  CTLS_MC_NO_CVM_CAPABILITY
++  CTLS_MC_TAC_DEFAULT
++  CTLS_MC_TAC_DENIAL
++  CTLS_MC_TAC_ONLINE
++  CTLS_MC_READER_FLOOT_LIMIT
++  CTLS_MC_TRANSACTION_LIMIT_NO_CDCVM
++  CTLS_MC_TRANSACTION_LIMIT_CDCVM
++  CTLS_MC_CVM_REQUIRED_LIMIT
++  CTLS_OUTCOME_PARAMETER_SET
++  CTLS_MC_HOLD_TIME_VALUE
++  CTLS_MC_KERNEL_CONFIGURATION
++  CTLS_MC_LIFETIME_TRANS_LOG
++  CTLS_MC_MESG_HOLD_TIME
++  CTLS_MC_MAG_STRIPE_CVM_CAPABILITY
++  CTLS_MC_SECURITY_CAPABILITY
++  CTLS_MC_MAG_STRIPE_NO_CVM_CAPABILITY
++  CTLS_MC_MAX_NUMBER_TRANS_LOG
++  CTLS_AE_READER_CAPABILITY
++  CTLS_AE_ENHANCED_READER_CAPABILITY
++  CTLS_AE_DRL_SETS
++  CTLS_AE_SUPPORT_DELAYED_AUTH
++  CTLS_AE_GO_ONLINE
++  CTLS_AE_UN_RANGE
++  ISSUER_AUTH_RESP_CODE
++  ISSUER_AUTH_DATA
++  ISSUER_AUTH_CODE
++  ISSUER_SCRIPT71
++  ISSUER_SCRIPT72
++ void isFixed()
++ void isVariable()
++ void isTag(String)
++ void isTag(TagData)
+}
+
+
+enum com.bbva.devicelib.physical.IPrinter$EAlign {
++  LEFT
++  CENTER
++  RIGHT
+}
+
+enum com.bbva.devicelib.physical.IPrinter$EFont {
++  SMALL
++  NORMAL
++  MEDIUM
++  BIG
+}
+
+enum com.bbva.devicelib.physical.IPrinter$EBarCode {
++  UPC_A
++  UPC_E
++  EAN13
++  EAN8
++  CODE39
++  ITF
++  CODEBAR
++  CODE93
++  CODE12
+}
+
+interface com.bbva.devicelib.physical.IPrinter {
++ Boolean bold
++ Boolean underline
++ EAlign align
++ EFont font
++ void command(ByteArray)
++ void init()
++ void reset()
++ void lineFeed(Int)
++ void text(String)
++ void textLine(String)
++ void format(EFont,Boolean,EAlign)
++ void barCode(String,EBarCode,Int,Int,Boolean)
++ void qrCode(String,Int)
++ void image(ByteArray)
++ void image(Bitmap)
+}
+
+
+enum com.bbva.devicelib.physical.ISoftwareInstall$EUpdateStatus {
++  INIT
++  SUCCESS
++  UPDATING
++  LOW_POWER
++  NOT_AVAILABLE
++  FAIL
+}
+
+interface com.bbva.devicelib.physical.ISoftwareInstall {
++ void install(Bundle)
++ void uninstall()
++ void stopInstall()
++ void onPercentageEvent((percentage: Int) -> Unit)
++ void onUpdateFirmwareResEvent((response: EUpdateStatus) -> Unit)
+}
+
+class com.bbva.devicelib.emv.configData.CapkData {
++ void isEmpty()
+}
+
+class com.bbva.devicelib.emv.outputData.Application {
++ String betterName
++ void isEmpty()
+}
+
+
+interface com.bbva.devicelib.module.IDeviceCenterCreator {
++ IDeviceCenter create(Context)
+}
+
+class com.bbva.devicelib.emv.configData.TerminalParam {
++ void isEmpty()
+}
+
+class com.bbva.devicelib.emv.outputData.OutputData {
++ void isEmpty()
+}
+
+
+
+com.bbva.devicelib.emv.configData.Tlv +.. com.bbva.devicelib.emv.configData.Tlv$Companion
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.configData.Tlv
+com.bbva.devicelib.emv.IEmvProcess +.. com.bbva.devicelib.emv.IEmvProcess$EError
+com.bbva.devicelib.emv.IEmvProcess +.. com.bbva.devicelib.emv.IEmvProcess$EResult
+com.bbva.devicelib.physical.IAvailable <|.. com.bbva.devicelib.emv.IEmvProcess
+com.bbva.devicelib.emv.inputData.CvmOptions +.. com.bbva.devicelib.emv.inputData.CvmOptions$ECapabilities
+com.bbva.devicelib.emv.outputData.enums.cvmResult.EPerformed +.. com.bbva.devicelib.emv.outputData.enums.cvmResult.EPerformed$Companion
+com.bbva.devicelib.emv.outputData.enums.cvmResult.EResult +.. com.bbva.devicelib.emv.outputData.enums.cvmResult.EResult$Companion
+com.bbva.devicelib.emv.outputData.CardData +.. com.bbva.devicelib.emv.outputData.CardData$Companion
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.CardData
+com.bbva.devicelib.physical.IAvailable <|.. com.bbva.devicelib.physical.ISound
+com.bbva.devicelib.emv.outputData.enums.Pem.EPanMode +.. com.bbva.devicelib.emv.outputData.enums.Pem.EPanMode$Companion
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.TvrData
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.TvrDataByte
+com.bbva.devicelib.physical.IAvailable <|.. com.bbva.devicelib.physical.IScan
+com.bbva.devicelib.emv.outputData.Tvr +.. com.bbva.devicelib.emv.outputData.Tvr$Companion
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.Tvr
+com.bbva.devicelib.emv.outputData.enums.Pem.EPinMode +.. com.bbva.devicelib.emv.outputData.enums.Pem.EPinMode$Companion
+com.bbva.devicelib.physical.IPinpad +.. com.bbva.devicelib.physical.IPinpad$EResult
+com.bbva.devicelib.physical.IAvailable <|.. com.bbva.devicelib.physical.IPinpad
+com.bbva.devicelib.emv.configData.TlvList +.. com.bbva.devicelib.emv.configData.TlvList$Companion
+com.bbva.devicelib.emv.outputData.ServiceCode +.. com.bbva.devicelib.emv.outputData.ServiceCode$Companion
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.ServiceCode
+com.bbva.devicelib.emv.IEmvConfig +.. com.bbva.devicelib.emv.IEmvConfig$EType
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.IEmvConfig
+com.bbva.devicelib.physical.IAvailable <|.. com.bbva.devicelib.emv.IEmvConfig
+com.bbva.devicelib.emv.outputData.Tsi +.. com.bbva.devicelib.emv.outputData.Tsi$Companion
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.Tsi
+com.bbva.devicelib.emv.outputData.enums.serviceCode.EAuthorization +.. com.bbva.devicelib.emv.outputData.enums.serviceCode.EAuthorization$Companion
+com.bbva.devicelib.emv.outputData.enums.serviceCode.EService +.. com.bbva.devicelib.emv.outputData.enums.serviceCode.EService$Companion
+com.bbva.devicelib.emv.outputData.enums.serviceCode.EInterchange +.. com.bbva.devicelib.emv.outputData.enums.serviceCode.EInterchange$Companion
+com.bbva.devicelib.emv.outputData.CvmResult +.. com.bbva.devicelib.emv.outputData.CvmResult$Companion
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.CvmResult
+com.bbva.devicelib.physical.ICard +.. com.bbva.devicelib.physical.ICard$EType
+com.bbva.devicelib.physical.ICard +.. com.bbva.devicelib.physical.ICard$EStep
+com.bbva.devicelib.physical.IAvailable <|.. com.bbva.devicelib.physical.ICard
+com.bbva.devicelib.physical.IHsm +.. com.bbva.devicelib.physical.IHsm$EKeyType
+com.bbva.devicelib.physical.IHsm +.. com.bbva.devicelib.physical.IHsm$EAlgo
+com.bbva.devicelib.physical.IHsm +.. com.bbva.devicelib.physical.IHsm$CryptogramData
+com.bbva.devicelib.physical.IEmpty <|.. com.bbva.devicelib.physical.IHsm$CryptogramData
+com.bbva.devicelib.physical.IHsm +.. com.bbva.devicelib.physical.IHsm$EEncryptMode
+com.bbva.devicelib.physical.IAvailable <|.. com.bbva.devicelib.physical.IHsm
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.physical.data.CardConfig
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.configData.AidData
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.TsiData
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.TsiDataByte
+com.bbva.devicelib.physical.IInfo +.. com.bbva.devicelib.physical.IInfo$EType
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.inputData.CurrencyData
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.physical.data.PinpadText
+com.bbva.devicelib.physical.ILed +.. com.bbva.devicelib.physical.ILed$EColor
+com.bbva.devicelib.physical.IAvailable <|.. com.bbva.devicelib.physical.ILed
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.TrackData
+com.bbva.devicelib.physical.IScreen +.. com.bbva.devicelib.physical.IScreen$ENavigator
+com.bbva.devicelib.physical.IScreen +.. com.bbva.devicelib.physical.IScreen$EPosition
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.IccData
+com.bbva.devicelib.emv.outputData.PemData +.. com.bbva.devicelib.emv.outputData.PemData$Companion
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.PemData
+com.bbva.devicelib.emv.outputData.PanData +.. com.bbva.devicelib.emv.outputData.PanData$EMask
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.PanData
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.configData.SpecificData
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.physical.data.PinpadData
+com.bbva.devicelib.module.IDeviceCenter +.. com.bbva.devicelib.module.IDeviceCenter$EDevice
+com.bbva.devicelib.connection.IConnect <|.. com.bbva.devicelib.module.IDeviceCenter
+com.bbva.devicelib.physical.IPrinter +.. com.bbva.devicelib.physical.IPrinter$EAlign
+com.bbva.devicelib.physical.IPrinter +.. com.bbva.devicelib.physical.IPrinter$EFont
+com.bbva.devicelib.physical.IPrinter +.. com.bbva.devicelib.physical.IPrinter$EBarCode
+com.bbva.devicelib.physical.IAvailable <|.. com.bbva.devicelib.physical.IPrinter
+com.bbva.devicelib.physical.ISoftwareInstall +.. com.bbva.devicelib.physical.ISoftwareInstall$EUpdateStatus
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.configData.CapkData
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.Application
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.configData.TerminalParam
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.devicelib.emv.outputData.OutputData
+@enduml
