@@ -35,6 +35,10 @@ interface IPrinter: IAvailable {
     fun text(text: String)
     fun textLine(text: String)
 
+    fun column(col1: String, col2: String)
+    fun column(col1: String, col2: String, col3: String)
+
+    fun checkPaper(): Boolean
     fun format(font: EFont, bold: Boolean, align: EAlign)
 
     enum class EBarCode{
