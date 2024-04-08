@@ -52,3 +52,5 @@ data class PanData(var number: String = DEFAULT_NUMBER, var sequenceNumber: Stri
         return number.replaceRange(starIndex until starIndex + count, ch.toString().repeat(count))
     }
 }
+
+class PanDataException(message: String): Exception(message)

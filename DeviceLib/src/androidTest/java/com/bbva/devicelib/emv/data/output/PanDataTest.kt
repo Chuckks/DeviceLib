@@ -1,6 +1,7 @@
 package com.bbva.devicelib.emv.data.output
 
 import com.bbva.devicelib.emv.outputData.PanData
+import com.bbva.devicelib.emv.outputData.PanDataException
 import org.junit.Assert
 import org.junit.Test
 
