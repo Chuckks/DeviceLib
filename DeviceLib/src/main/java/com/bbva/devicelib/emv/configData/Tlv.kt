@@ -5,7 +5,6 @@ import com.bbva.utilitieslib.extensions.toHexaByte
 import com.bbva.utilitieslib.extensions.toHexaString
 import com.bbva.utilitieslib.interfaces.IEmpty
 
-
 const val FIRST_MASK = "81"
 const val SECOND_MASK = "82"
 const val CHARS_SIZE = 2
@@ -17,6 +16,11 @@ const val MAX_LENGTH_SIZE = 6
 private val TAG = Constant.DEV_PREFIX + Tlv::class.java.simpleName
 private const val DEFAULT_PAD_CHAR = '0'
 
+
+enum class EFmtType{
+    BIN,
+    ASCII
+}
 
 data class Tlv(var tag: String = "", var value: String = ""): IEmpty {
     constructor(tagData: TagData, char: Char = DEFAULT_PAD_CHAR): this(tagData.code, fillDefaultData(tagData, char))
@@ -31,9 +35,9 @@ data class Tlv(var tag: String = "", var value: String = ""): IEmpty {
 
     override fun isEmpty() = value.isEmpty()
 
-    fun pack() = StringBuilder()
+    fun pack(format: EFmtType = EFmtType.BIN) = StringBuilder()
         .append(tag)
-        .append(calculateLength(value.length / 2))
+        .append(calculateLength(if (format == EFmtType.ASCII) value.length else value.length / 2))
         .append(value).toString()
 
     companion object {
@@ -41,21 +45,19 @@ data class Tlv(var tag: String = "", var value: String = ""): IEmpty {
         private fun fillDefaultData(tagData: TagData, char: Char) =
             String().padStart(tagData.maxLength * 2, char)
 
-        fun parser(tlv: String) = parser(tlv, 0).first
+        fun parser(tlv: String, format: EFmtType): Tlv = parser(tlv, 0, format).first
 
-        fun parser(tlv: String, startIndex: Int): Pair<Tlv, Int> {
-
+        fun parser(tlv: String, startIndex: Int, format: EFmtType) : Pair<Tlv, Int>{
             var index = startIndex
 
             val (tagAux, tagSize) = unpackTag(tlv, index)
             index += tagSize
 
-            val (valueAux, valueSize) = unpackValue(tlv, index)
+            val (valueAux, valueSize) = unpackValue(tlv, index, format)
             index += valueSize
 
-            return Pair<Tlv, Int>(Tlv(tagAux, valueAux), index - startIndex)
+            return Pair(Tlv(tagAux, valueAux), index - startIndex)
         }
-
 
         fun convertToNumeric(tagData: TagData, value: Int): String {
             return if (tagData.format == EFormat.NUMERIC)
@@ -93,7 +95,7 @@ data class Tlv(var tag: String = "", var value: String = ""): IEmpty {
             return lengthBuilder.toString()
         }
 
-        private fun unpackLength(data: String, startIndex: Int): Pair<Int, Int> {
+        private fun unpackLength(data: String, startIndex: Int, format: EFmtType): Pair<Int, Int> {
             var index: Int = startIndex
             var length = data.substring(index, index + CHARS_SIZE)
             index += CHARS_SIZE
@@ -107,7 +109,9 @@ data class Tlv(var tag: String = "", var value: String = ""): IEmpty {
                 index += CHARS_SIZE * 2
             }
 
-            return Pair(length.toInt(16) * CHARS_SIZE, index - startIndex)
+            val size = if(format == EFmtType.BIN) length.toInt(16) * CHARS_SIZE else length.toInt(16)
+
+            return Pair(size, index - startIndex)
         }
 
 
@@ -134,8 +138,8 @@ data class Tlv(var tag: String = "", var value: String = ""): IEmpty {
             return Pair(tagSequence.toString(), index - startIndex)
         }
 
-        private fun unpackValue(data: String, startIndex: Int): Pair<String, Int> {
-            val (length, size) = unpackLength(data, startIndex)
+        private fun unpackValue(data: String, startIndex: Int, format: EFmtType): Pair<String, Int> {
+            val (length, size) = unpackLength(data, startIndex, format)
             val index = startIndex + size
             return Pair(data.substring(index, index + length), length + size)
         }

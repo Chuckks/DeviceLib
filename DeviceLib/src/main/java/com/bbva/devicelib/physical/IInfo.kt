@@ -16,7 +16,8 @@ interface IInfo {
         BATTERY_PERCENTAGE,
         MANUFACTURE,
         MAC_ADDRESS,
-        POS_ID
+        POS_ID,
+        LEVEL_BATTERY
     }
 
     fun getInfo(type: EType): String

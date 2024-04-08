@@ -11,7 +11,7 @@ interface IEmvConfig: IEmpty, IAvailable {
 
     fun isCapksLoaded(): Boolean
     fun isAidsLoaded(): Boolean
-    //TODO crear funcionalidad de las clases TerminalParam, AidData y CapkData
+
     fun setConfig(terminalParams: TerminalParam, aids: List<AidData>, capks: List<CapkData>): Boolean
     fun clean(): Boolean
 
@@ -24,7 +24,6 @@ interface IEmvConfig: IEmpty, IAvailable {
         EXPRESSPAY
     }
 
-    //TODO Crear funcionalidad de la clase (TlvList)
     fun setSpecificConfig(type: EType, tlvList: TlvList)
     fun setSpecificConfig(config: HashMap<EType, TlvList>)
 
