@@ -42,6 +42,8 @@ enum class ETag(val tagData: TagData) {
     TX_CVM_RESULT(TagData("9F34", EFormat.HEXA, 3)),
     TX_UNPREDITABLE_NUMBER(TagData("9F37", EFormat.HEXA, 4)),
     TX_POS_ENTRY_MODE(TagData("9F39", EFormat.NUMERIC, 1)),
+    TX_FACTOR_INDICATOR(TagData("9F6E", EFormat.HEXA, 4)),
+    TX_APP_TRANSACTION_COUNTER(TagData("9F36", EFormat.HEXA, 2)),
 
     //@ICC
     ICC_TRACK2(TagData("57", EFormat.HEXA, 0, 19)),
