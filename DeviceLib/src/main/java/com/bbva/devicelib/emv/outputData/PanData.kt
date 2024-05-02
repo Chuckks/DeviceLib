@@ -26,6 +26,7 @@ data class PanData(var number: String = DEFAULT_NUMBER, var sequenceNumber: Stri
 
     enum class EMask {
         LAST4,
+        ONLY_LAST4,
         FIRST6_LAST4
     }
 
@@ -38,6 +39,7 @@ data class PanData(var number: String = DEFAULT_NUMBER, var sequenceNumber: Stri
         }
 
         return when(type){
+            EMask.ONLY_LAST4 -> number.takeLast(4)
             EMask.LAST4 -> getMaskedPan(0, number.length - MASKED_LAST4, ch)
             EMask.FIRST6_LAST4 -> getMaskedPan(MASKED_FIRST6, number.length - (MASKED_LAST4 + MASKED_FIRST6), ch)
         }
@@ -52,5 +54,3 @@ data class PanData(var number: String = DEFAULT_NUMBER, var sequenceNumber: Stri
         return number.replaceRange(starIndex until starIndex + count, ch.toString().repeat(count))
     }
 }
-
-class PanDataException(message: String): Exception(message)

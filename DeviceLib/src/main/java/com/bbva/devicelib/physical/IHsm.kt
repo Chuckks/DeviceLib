@@ -23,8 +23,7 @@ interface IHsm: IAvailable {
         RSA
     }
 
-    data class CryptogramData(
-        val keyType: EKeyType,
+    data class CryptogramData( val keyType: EKeyType,
         var cryptogram: String = "",
         var kcv: String = ""
     ): IEmpty {
@@ -32,6 +31,10 @@ interface IHsm: IAvailable {
     }
 
     fun getKCV(storeIndex: Int): ByteArray
+    fun getKsn(): ByteArray
+
+    fun getCrc32(storeIndex: Int, data: String): ByteArray
+    fun getCrc32(storeIndex: Int, data: ByteArray): ByteArray
 
     fun injectClearKey(type: EKeyType, key: SecretKey, storeIndex: Int): Boolean
     fun injectEncryptedKey(type: EKeyType, encryptIndex: Int, key: SecretKey, storeIndex: Int): Boolean

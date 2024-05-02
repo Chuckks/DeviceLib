@@ -44,6 +44,9 @@ enum class ETag(val tagData: TagData) {
     TX_POS_ENTRY_MODE(TagData("9F39", EFormat.NUMERIC, 1)),
     TX_FACTOR_INDICATOR(TagData("9F6E", EFormat.HEXA, 4)),
     TX_APP_TRANSACTION_COUNTER(TagData("9F36", EFormat.HEXA, 2)),
+    TX_APP_INTERCHANGE_PROFILE(TagData("82", EFormat.HEXA, 2)),
+    TX_DEDICATED_FILE_NAME(TagData("84", EFormat.HEXA, 16)),
+    TX_CATEGORY_CODE(TagData("9F53", EFormat.ASCII, 1)),
 
     //@ICC
     ICC_TRACK2(TagData("57", EFormat.HEXA, 0, 19)),
@@ -60,7 +63,6 @@ enum class ETag(val tagData: TagData) {
     ICC_APP_NAME(TagData("9F12", EFormat.ASCII, 1, 16)),
     ICC_PREFERRED_NAME(TagData("9F12", EFormat.ASCII, 1, 16)),
     ICC_APP_LABEL(TagData("50", EFormat.ASCII, 1, 16)),
-
     //@CTLS VISA
     CTLS_VISA_TTQ(TagData("9F66", EFormat.HEXA, 4)),
 
@@ -98,7 +100,9 @@ enum class ETag(val tagData: TagData) {
     ISSUER_AUTH_DATA(TagData("91", EFormat.HEXA, 8, 16)),
     ISSUER_AUTH_CODE(TagData("89", EFormat.ASCII, 6)),
     ISSUER_SCRIPT71(TagData("71", EFormat.HEXA, 0, 128)),
-    ISSUER_SCRIPT72(TagData("72", EFormat.HEXA, 0, 128));
+    ISSUER_SCRIPT72(TagData("72", EFormat.HEXA, 0, 128)),
+    ISSUER_APP_DATA(TagData("9F10", EFormat.HEXA, 22)),
+    ISSUER_SCRIPT_RESULT(TagData("9F5B", EFormat.HEXA, 21));
 
     fun isFixed() = (tagData.minLength == tagData.maxLength)
     fun isVariable() = !isFixed()

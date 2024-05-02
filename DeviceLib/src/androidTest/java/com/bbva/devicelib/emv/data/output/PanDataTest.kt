@@ -1,7 +1,6 @@
 package com.bbva.devicelib.emv.data.output
 
 import com.bbva.devicelib.emv.outputData.PanData
-import com.bbva.devicelib.emv.outputData.PanDataException
 import org.junit.Assert
 import org.junit.Test
 
@@ -38,10 +37,4 @@ class PanDataTest {
         Assert.assertNotEquals(panMasked, panMaskedFist6Last4)
     }
 
-    @Test
-    fun getMaskedPanFailTest02() {
-        Assert.assertThrows(PanDataException::class.java) {
-            PanData(panCharacter).getMaskedPan()
-        }
-    }
 }

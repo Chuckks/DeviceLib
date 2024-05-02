@@ -1,6 +1,7 @@
 package com.bbva.devicelib.emv.configData
 
 import com.bbva.devicelib.Constant
+import com.bbva.utilitieslib.extensions.toAsciiToHexa
 import com.bbva.utilitieslib.extensions.toHexaByte
 import com.bbva.utilitieslib.extensions.toHexaString
 import com.bbva.utilitieslib.interfaces.IEmpty
@@ -19,7 +20,8 @@ private const val DEFAULT_PAD_CHAR = '0'
 
 enum class EFmtType{
     BIN,
-    ASCII
+    ASCII,
+    HEX
 }
 
 data class Tlv(var tag: String = "", var value: String = ""): IEmpty {
@@ -35,9 +37,17 @@ data class Tlv(var tag: String = "", var value: String = ""): IEmpty {
 
     override fun isEmpty() = value.isEmpty()
 
+    private fun checkLength(format: EFmtType): Int {
+        return when(format){
+            EFmtType.ASCII  -> value.length
+            EFmtType.HEX,
+            EFmtType.BIN    -> value.length / 2
+        }
+    }
+
     fun pack(format: EFmtType = EFmtType.BIN) = StringBuilder()
         .append(tag)
-        .append(calculateLength(if (format == EFmtType.ASCII) value.length else value.length / 2))
+        .append(calculateLength(checkLength(format), format))
         .append(value).toString()
 
     companion object {
@@ -75,7 +85,7 @@ data class Tlv(var tag: String = "", var value: String = ""): IEmpty {
 
         fun convert(value: ByteArray) = value.toHexaString()
 
-        private fun calculateLength(valueLength: Int): String {
+        private fun calculateLength(valueLength: Int, format: EFmtType): String {
             var fillLengthSize = 2
             val lengthBuilder = StringBuilder(MAX_LENGTH_SIZE)
 
@@ -91,7 +101,13 @@ data class Tlv(var tag: String = "", var value: String = ""): IEmpty {
                 }
             }
 
-            lengthBuilder.append(String.format("%0${fillLengthSize}x", valueLength))
+            val length = when(format){
+                EFmtType.BIN    -> String.format("%0${fillLengthSize}x", valueLength)
+                EFmtType.ASCII  -> String.format("%0${fillLengthSize}d", valueLength)
+                EFmtType.HEX    -> String.format("%0${fillLengthSize}d", valueLength).toAsciiToHexa()
+            }
+
+            lengthBuilder.append(length)
             return lengthBuilder.toString()
         }
 
